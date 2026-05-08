@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -63,6 +64,15 @@ export default function RootLayout({
 
         {/* Contenido con z-index sobre el fondo */}
         <div className="relative z-10">
+          {/* Navegación Principal */}
+          <nav className="w-full flex justify-center gap-8 py-4 text-sm font-serif border-b border-purple-900/30 bg-cosmic-dark/50 backdrop-blur-sm">
+            <Link href="/" className="text-purple-300 hover:text-amber-400 transition-colors">
+              Inicio
+            </Link>
+            <Link href="/autor" className="text-purple-300 hover:text-amber-400 transition-colors">
+              Sobre el Autor
+            </Link>
+          </nav>
           {children}
         </div>
       </body>
