@@ -1,3 +1,7 @@
+'use client';
+
+import { useState, useEffect, useRef } from 'react';
+
 interface AdBannerProps {
   type: 'horizontal' | 'vertical' | 'square';
   label?: string;
@@ -10,6 +14,39 @@ const AD_SIZES = {
 };
 
 export default function AdBanner({ type, label = 'PUBLICIDAD' }: AdBannerProps) {
+  const [adCode, setAdCode] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetch('/api/ads')
+      .then(r => r.json())
+      .then(data => {
+        if (data && data[type]) {
+          setAdCode(data[type]);
+        }
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [type]);
+
+  useEffect(() => {
+    if (adCode && ref.current) {
+      ref.current.innerHTML = '';
+      const fragment = document.createRange().createContextualFragment(adCode);
+      ref.current.appendChild(fragment);
+    }
+  }, [adCode]);
+
+  if (adCode) {
+    return (
+      <div 
+        ref={ref} 
+        className={`${AD_SIZES[type]} mx-auto flex items-center justify-center overflow-hidden`} 
+      />
+    );
+  }
+
   return (
     <div
       className={`
