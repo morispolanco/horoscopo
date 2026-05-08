@@ -25,14 +25,6 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  const adminPassword = process.env.ADMIN_PASSWORD;
-  const providedPassword = request.headers.get('x-admin-password');
-
-  // Solo verificar contraseña si está configurada en las variables de entorno
-  if (adminPassword && providedPassword !== adminPassword) {
-    return NextResponse.json({ error: 'No autorizado. Contraseña incorrecta.' }, { status: 401 });
-  }
-
   try {
     const body = await request.json();
     ensureAdsFile();

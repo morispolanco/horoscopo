@@ -6,7 +6,6 @@ export default function AdminPage() {
   const [ads, setAds] = useState({ horizontal: '', vertical: '', square: '' });
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
-  const [password, setPassword] = useState('');
 
   useEffect(() => {
     fetch('/api/ads').then(r => r.json()).then(data => {
@@ -21,15 +20,14 @@ export default function AdminPage() {
       const res = await fetch('/api/ads', {
         method: 'POST',
         headers: { 
-          'Content-Type': 'application/json',
-          'x-admin-password': password
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(ads)
       });
       if (res.ok) {
         setMessage('¡Publicidad guardada correctamente!');
       } else {
-        setMessage('Error al guardar. Verifica la contraseña.');
+        setMessage('Error al guardar.');
       }
     } catch (e) {
       setMessage('Error de conexión.');
@@ -51,19 +49,6 @@ export default function AdminPage() {
         </div>
 
         <div className="space-y-6">
-          <div>
-            <label className="block text-slate-300 mb-2 font-bold">Contraseña de Administrador (ADMIN_PASSWORD en .env)</label>
-            <input 
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              className="w-full max-w-md bg-slate-900 text-slate-300 border border-slate-700 rounded p-3 focus:outline-none focus:border-amber-500"
-              placeholder="Introduce la contraseña"
-            />
-          </div>
-
-          <hr className="border-slate-800" />
-
           <div>
             <label className="block text-slate-300 mb-2 font-bold">Banner Horizontal (728x90)</label>
             <p className="text-xs text-slate-500 mb-2">Aparece en la parte superior de la página, debajo del encabezado.</p>
